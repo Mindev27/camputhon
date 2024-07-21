@@ -3,20 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="/main.css" rel="stylesheet">
+    <title>Open Lecture Time</title>
+    <link href="/4page.css" rel="stylesheet">
 </head>
 <body class="grey-bg">
-    
     <%- include('nav.ejs') %>
+    <div class="logo">
+        <img src="/images/logo2.png" alt="Open Lecture Time Logo">
+    </div>
+    <div class="container">
+        <h2>회원 정보를 입력해주세요.</h2>
 
-    <form class="form-box" action="/register" method="POST">
-        <h4>가입</h4>
-        <input name="username" placeholder="아이디">
-        <input name="password" type="password" placeholder="비밀번호">
-        <input name="passwordCheck" type="password" placeholder="비밀번호 확인">
-        <button type="submit">전송</button>
-    </form>
+        <form id="form-box" action="/register" method="POST">
+            <select name="university" required>
+                <option value="" disabled selected>대학교 선택</option>
+                <% universities.forEach(function(university) { %>
+                    <option value="<%= university %>"><%= university %></option>
+                <% }); %>
+            </select>
+            <select name="major" required>
+                <option value="" disabled selected>학과 선택</option>
+                <% majors.forEach(function(major) { %>
+                    <option value="<%= major %>"><%= major %></option>
+                <% }); %>
+            </select>
+            <input type="text" name="id" placeholder="ID" required>
+            <div class="password-container">
+                <input type="password" name="password" placeholder="Password" required>
+                <img src="자물쇠.png" alt="Show password" onclick="togglePassword()">
+            </div>
+            <input type="text" name="username" placeholder="이름" required>
+            <input type="email" name="email" placeholder="e-mail" required>
+            <button type="submit" class="submit-btn">다음</button>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword() {
+            var passwordInput = document.querySelector('input[username="password"]');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+    </script>
+
+    
 
 
 </body>
