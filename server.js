@@ -134,9 +134,9 @@ function checkIdPw(req, res, next) {
 
 app.get('/login', async(req, res) => {
     res.render('login.ejs');
-  });
+});
   
-  app.post('/login', checkIdPw, async (req, res, next) => {
+app.post('/login', checkIdPw, async (req, res, next) => {
     passport.authenticate('local', (error, user, info)=>{
         if(error) return res.status(500).json(error)
         if(!user) return res.status(401).json(info.message)
@@ -147,7 +147,18 @@ app.get('/login', async(req, res) => {
     })(req, res, next)
 });
 
-  
+
+app.post('/loginafterregister', checkIdPw, async (req, res, next) => {
+    passport.authenticate('local', (error, user, info)=>{
+        if(error) return res.status(500).json(error)
+        if(!user) return res.status(401).json(info.message)
+        req.logIn(user, (err)=>{
+            if(err) return next(err)
+            res.render('timetable.ejs', { data : req.user })
+        })
+    })(req, res, next)
+});
+
 app.get('/register', (req, res) => {
     const universities = [
         { value: 'uni1', label: '동국대학교' }
