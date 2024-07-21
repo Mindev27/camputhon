@@ -12,12 +12,64 @@
         .highlight {
             background-color: lightblue;
         }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+        }
+        .logo {
+            height: 40px;
+        }
+        .user-menu {
+            position: relative;
+        }
+        .user-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background-color: #f1f1f1;
+        }
+        .dropdown-content a:hover {
+            background-color: #00B4D8;
+        }
+        .show {
+            display: block;
+        }
     </style>
     <link rel="stylesheet" href="3page.css">
 </head>
 <body>
     <header>
         <img src="/open_lecture_time_logo.png" alt="Open Lecture Time" class="logo">
+        <div class="user-menu">
+            <!-- 이미지 클릭을 위해 span 대신 img 요소 사용 -->
+            <img src="/person.png" alt="User Icon" class="user-icon" onclick="toggleDropdown()" width="30" height="30">
+            <div id="userDropdown" class="dropdown-content">
+                <a href="#">회원정보 보기</a>
+                <a href="#">회원정보 수정</a>
+                <a href="#">로그아웃</a>
+            </div>
+        </div>
     </header>
     <main>
         <div class="timetable-container">
@@ -64,5 +116,23 @@
             </table>
         </div>
     </main>
+    <script>
+        function toggleDropdown() {
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+
+        // 드롭다운 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-icon')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
