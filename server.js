@@ -87,7 +87,7 @@ app.get('/write', async(req, res) => {
     if(!req.user) {
         return res.redirect('/login');
     }
-    if(req.user.isAdmin == false) {
+    if(req.user.isAdmin === false) {
         res.send("쓰기 권한이 없습니다!");
     }
     res.render('write.ejs');
@@ -95,16 +95,17 @@ app.get('/write', async(req, res) => {
 
 app.post('/newpost', async(req, res) => {
 
-    console.log(req.file.location)
-
     try {
         if(req.body.title == '') {
             res.send("no title error");
         } else {
             await db.collection('post').insertOne({
                 title : req.body.title,
-                content : req.body.content,
-                img : req.file.location
+                applicationStartTime : req.body.applicationStartTime,
+                applicationEndTime : req.body.applicationEndTime,
+                lectureStartTime : req.body.lectureStartTime,
+                lectureEndTime : req.body.lectureEndTime,
+                applicationLink : req.body.applicationLink
             })
             res.redirect('/list');
         }

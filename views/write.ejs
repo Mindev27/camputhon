@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>새 강의 작성</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <header>
+        <h1>새 강의 작성</h1>
+    </header>
+    <main>
+        <form action="/newpost" method="POST">
+            <div>
+                <label for="title">제목:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div>
+                <label for="applicationStartTime">신청 시작 시간:</label>
+                <input type="datetime-local" id="applicationStartTime" name="applicationStartTime" required>
+            </div>
+            <div>
+                <label for="applicationEndTime">신청 종료 시간:</label>
+                <input type="datetime-local" id="applicationEndTime" name="applicationEndTime" required>
+            </div>
+            <div>
+                <label for="lectureStartTime">강의 시작 시간:</label>
+                <input type="datetime-local" id="lectureStartTime" name="lectureStartTime" required>
+            </div>
+            <div>
+                <label for="lectureEndTime">강의 종료 시간:</label>
+                <input type="datetime-local" id="lectureEndTime" name="lectureEndTime" required>
+            </div>
+            <div>
+                <label for="applicationLink">신청 링크:</label>
+                <input type="url" id="applicationLink" name="applicationLink" required>
+            </div>
+            <button type="submit">저장</button>
+        </form>
+    </main>
+</body>
+</html>
