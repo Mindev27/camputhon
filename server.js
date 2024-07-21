@@ -13,25 +13,6 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const session = require('express-session')
-const passport = require('passport')
-const LocalStrategy = require('passport-local')
-
-app.use(passport.initialize())
-app.use(session({
-  secret: process.env.SECRET_PASSWORD,
-  resave : false,
-  saveUninitialized : false,
-  cookie : { maxAge : 60 * 60 * 1000 },
-  store : MongoStore.create({
-    mongoUrl : process.env.DB_URL,
-    dbName : 'forum'
-  })
-}))
-app.use(passport.session()) 
-
-
-
 
 let connectDB = require('./database.js')
 
@@ -83,3 +64,5 @@ app.put('/edit', async(req, res) => {
         res.status(500).send("server error");
     }
 });
+
+app.use('/login', require('./route/login.js'))
