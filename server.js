@@ -291,3 +291,44 @@ app.post('/interests', async (req, res) => {
         res.status(500).json({ success: false, message: '서버 오류가 발생했습니다: ' + error.message });
     }
 });
+
+app.get('/searchlecture', async (req, res) => {
+    let posts = await db.collection('post').find().toArray();
+    let user = req.user;
+
+    console.log(posts);
+
+    let canListenLecture = [];
+
+    const addMinutes = (date, minutes) => {
+        return new Date(date.getTime() + minutes * 60000);
+    }
+
+    posts.forEach(post => {
+        let lectureTimes = [];
+        let startTime = addMinutes(new Date(post.lectureStartTime), 540);
+        let endTime = addMinutes(new Date(post.lectureEndTime), 540);
+        let dayOfWeek = post.lectureDay.toLowerCase().slice(0, 3);
+
+        console.log(post.title, startTime, endTime);
+        while (startTime < endTime) {
+            let hours = startTime.getUTCHours().toString().padStart(2, '0');
+            let minutes = startTime.getUTCMinutes().toString().padStart(2, '0');
+            if(minutes == 0) lectureTimes.push(`${dayOfWeek}-${hours}`);
+            else lectureTimes.push(`${dayOfWeek}-${hours}-${minutes}`);
+            
+            startTime = addMinutes(startTime, 30);
+        }
+
+        console.log(lectureTimes);
+
+        let canAttend = lectureTimes.every(time => user.selectedCells.includes(time));
+        
+        if (canAttend) {
+            canListenLecture.push(post);
+        }
+    });
+
+    console.log(canListenLecture);
+    res.render('list.ejs', { post : canListenLecture });
+})
