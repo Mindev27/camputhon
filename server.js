@@ -162,39 +162,33 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', checkIdPw, async (req, res, next) => {
-    console.log(req.user)
-    let sameId = await db.collection('user').findOne({ username: req.body.username })
-    if(sameId) {
-        return res.status(409).json({ message: '이미 사용중인 아이디입니다.' })
+    console.log(req.body);
+
+    let sameId = await db.collection('user').findOne({ username: req.body.username });
+    if (sameId) {
+        return res.status(409).json({ message: '이미 사용중인 아이디입니다.' });
     }
 
-    if(req.body.password != req.body.passwordCheck ) {
-        return res.status(400).json({ message: '비밀번호가 일치하지 않습니다.' }); 
-    }
-
-    let hashed = await bcrypt.hash(req.body.password, 10)
-    console.log(hashed)
+    let hashed = await bcrypt.hash(req.body.password, 10);
+    console.log(hashed);
 
     let result = await db.collection('user').insertOne({
         username : req.body.username,
         password : hashed,
         isAdmin : false,
-        name: req.user.name,
-        email : req.user.email,
-        universitiy : req.use.universities.label,
-        major : req.user.majors.label
-    })
+        name: req.body.name,
+        email : req.body.email,
+        university : req.body.universities,
+        major : req.body.major
+    });
 
-    // 자동 로그인 처리
-    passport.authenticate('local', (err, user, info) => {
-        if (err) return next(err);
-        if (!user) return res.status(401).json(info.message);
-        req.logIn(user, (err) => {
-            if (err) return next(err);
-            res.render('timetable.ejs'); // 로그인 되면 시간표 입력페이지로 이동
-        });
-    })(req, res, next);
+    if (result.insertedId) {
+        res.status(201).json({ message: '회원가입 성공', userId: result.insertedId });
+    } else {
+        res.status(500).json({ message: '회원가입 실패' });
+    }
 });
+
 
 app.post('/submit-timetable', async (req, res) => {
     const { selectedCells } = req.body;
@@ -228,7 +222,11 @@ app.post('/submit-timetable', async (req, res) => {
 });
 
 app.get('/timetable', async (req, res) => {
-    res.render('timetable.ejs')
+    if (req.isAuthenticated()) { // 로그인 상태 확인
+        res.render('timetable.ejs');
+    } else {
+        res.redirect('/login'); // 로그인 페이지로 리다이렉트
+    }
 });
 
 
