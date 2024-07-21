@@ -1,23 +1,198 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="/main.css" rel="stylesheet">
-</head>
-<body class="grey-bg">
-    
-    <%- include('nav.ejs') %>
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Open Lecture Time</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: white;
+            }
+            .container {
+                background-color: white;
+                padding: 40px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                text-align: center;
+                width: 50vw;
+                height: 70vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .logo {
+                align-self: flex-start;
+                margin: 50px;
+            }
+            .logo img {
+                max-width: 250px;
+            }
+            h2 {
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+            select, input {
+                width: calc(100% - 30px); /* Adjust width to account for padding of 15px */
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+            select {
+                appearance: none;
+                background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+                background-repeat: no-repeat;
+                background-position: right 10px top 50%;
+                background-size: 12px auto;
+            }
+            .input-container {
+                position: relative;
+                margin-bottom: 10px;
+                width: 100%;
+            }
+            .input-container img {
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 20px;
+                height: 20px;
+            }
+            .input-container input {
+                padding-left: 35px; /* Adjust padding to make space for the icon */
+            }
+            .password-container img {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 20px;
+                cursor: pointer;
+            }
+            .submit-btn {
+                width: 100%;
+                background-color: #a3e4f3;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            .submit-btn:hover {
+                background-color: #93d9e8;
+            }
+            .underlined {
+                border: none;
+                border-bottom: 2px solid #000;
+                padding: 10px 0;
+                box-sizing: border-box;
+                border-radius: 0;
+            }
+            .underlined:focus {
+                outline: none;
+                border-bottom: 2px solid #00f;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="logo">
+            <img src="/open_lecture_time_logo.png" alt="Open Lecture Time Logo">
+        </div>
+        <div class="container">
+            <h2>회원 정보를 입력해주세요.</h2>
+            <form id="signupForm" action="/register" method="POST">
+                <select name="university" required>
+                    <option value="" disabled selected>대학교 선택</option>
+                    <% universities.forEach(function(university) { %>
+                        <option value="<%= university.value %>"><%= university.label %></option>
+                    <% }); %>
+                </select>
+                <select name="major" required>
+                    <option value="" disabled selected>학과 선택</option>
+                    <% majors.forEach(function(major) { %>
+                        <option value="<%= major.value %>"><%= major.label %></option>
+                    <% }); %>
+                </select>
+                <div class="input-container">
+                    <img src="아이디.png" alt="ID Icon">
+                    <input type="text" name="username" placeholder="ID" class="underlined" required>
+                </div>
+                <div class="input-container password-container">
+                    <img src="비밀번호.png" alt="Password Icon">
+                    <input type="password" name="password" placeholder="Password" class="underlined" required>
+                    <img src="자물쇠.png" alt="Show password" onclick="togglePassword()">
+                </div>
+                <div class="input-container">
+                    <img src="이름.png" alt="Name Icon">
+                    <input type="text" name="name" placeholder="이름" class="underlined" required>
+                </div>
+                <div class="input-container">
+                    <img src="이메일.png" alt="Email Icon">
+                    <input type="email" name="email" placeholder="e-mail" class="underlined" required>
+                </div>
+                <button type="submit" class="submit-btn">다음</button>
+            </form>
+        </div>
 
-    <form class="form-box" action="/register" method="POST">
-        <h4>가입</h4>
-        <input name="username" placeholder="아이디">
-        <input name="password" type="password" placeholder="비밀번호">
-        <input name="passwordCheck" type="password" placeholder="비밀번호 확인">
-        <button type="submit">전송</button>
-    </form>
+        <script>
+            function togglePassword() {
+                var passwordInput = document.querySelector('input[name="password"]');
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                } else {
+                    passwordInput.type = "password";
+                }
+            }
 
-
-</body>
-</html>
+            document.getElementById('signupForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                console.log('Form submitted');
+                const formData = new FormData(this);
+                const jsonData = {};
+                formData.forEach((value, key) => {
+                    jsonData[key] = value;
+                });
+        
+                try {
+                    const registerResponse = await fetch('/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(jsonData),
+                    });
+        
+                    if (registerResponse.ok) {
+                        const loginData = { username: jsonData.username, password: jsonData.password };
+                        const loginResponse = await fetch('/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(loginData),
+                        });
+        
+                        if (loginResponse.ok) {
+                            window.location.href = '/timetable';
+                        } else {
+                            alert('로그인 실패. 로그인 정보를 확인해주세요.');
+                        }
+                    } else {
+                        const error = await registerResponse.json();
+                        alert('회원가입 실패: ' + error.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('오류가 발생했습니다. 다시 시도해주세요.');
+                }
+            });
+        </script>
+    </body>
+    </html>

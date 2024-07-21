@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Server response data:', data);
     
             if (data.success) {
-                window.location.href = '/list'; // 성공 시 이동할 페이지
+                window.location.href = '/interests'; // 성공 시 이동할 페이지
             } else {
                 console.error('Server responded with failure:', data);
                 alert('시간표 전송에 실패했습니다. 다시 시도해주세요.');
