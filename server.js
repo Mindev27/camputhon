@@ -221,6 +221,7 @@ app.post('/submit-timetable', async (req, res) => {
     }
 });
 
+
 app.get('/timetable', async (req, res) => {
     if (req.isAuthenticated()) { // 로그인 상태 확인
         res.render('timetable.ejs');
@@ -231,8 +232,13 @@ app.get('/timetable', async (req, res) => {
 
 
 app.get('/mytimetable', async (req, res) => {
-    console.log(req.user)
+    // console.log(req.user)
     res.render('mytimetable.ejs', { data : req.user })
+})
+
+app.get('/mytimetableedit', async (req, res) => {
+    // console.log(req.user)
+    res.render('mytimetableedit.ejs', { data : req.user })
 })
 
 app.get('/interests', (req, res) => {
