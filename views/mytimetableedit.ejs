@@ -22,8 +22,8 @@
     <main>
         <div class="timetable-container">
             <div class="header-container">
-                <h2><%= data.username %>의 시간표</h2>
-                <a href="/mytimetable/edit" class="navigation-button">시간표 수정하기</a>
+                <h2>시간표 수정하기</h2>
+                <a href="/other-page" class="navigation-button">시간표 등록하기</a>
             </div>
             <table class="timetable">
                 <thead>
@@ -62,7 +62,9 @@
                     <% } %>
                 </tbody>
             </table>
+            <button class="next-button">다음</button>
         </div>
     </main>
+    <script src="/3page.js"></script>
 </body>
 </html>

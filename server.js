@@ -222,6 +222,10 @@ app.get('/mytimetable', async (req, res) => {
     console.log(req.user)
     res.render('mytimetable.ejs', { data : req.user })
 })
+app.get('/mytimetable/edit', async (req, res) => {
+    console.log(req.user)
+    res.render('mytimetableedit.ejs', { data : req.user })
+})
 
 app.get('/interests', (req, res) => {
     res.render('2페이지.ejs', {
