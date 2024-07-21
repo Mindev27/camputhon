@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <%= pageTitle %></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: white;
+        }
+        .logo {
+            align-self: flex-start;
+            margin: 50px;
+        }
+        .logo img {
+            max-width: 250px;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 70vw;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .container h2 {
+            font-size: 2.5em;
+        }
+        .welcome-text {
+            text-align: left;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        .interest-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .interest-item {
+            display: flex;
+            align-items: center;
+            text-align: left;
+            font-size: 1.5em;
+        }
+        .submit-btn {
+            background-color: #b2e7f5;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.5em;
+            margin-top: 10px;
+            width: 90%;
+            align-self: center;
+        }
+        .submit-btn:hover {
+            background-color: #a3e4f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="<%= logoSrc %>" alt="Open Lecture Time Logo">
+    </div>
+    <div class="container">
+        <h2><%= heading %></h2>
+        <p class="welcome-text">관심분야를 선택해주세요.<br><br></p>
+        <div class="interest-list">
+            <% interests.forEach(function(interest) { %>
+                <div class="interest-item">
+                    <input type="checkbox" id="<%= interest.id %>">
+                    <label for="<%= interest.id %>"> <%= interest.label %></label>
+                </div>
+            <% }); %>
+        </div>
+        <button class="submit-btn" onclick="submitInterests()">다음</button>
+    </div>
+
+    <script>
+        function submitInterests() {
+            const interests = [];
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkboxes.forEach(checkbox => {
+                interests.push(checkbox.nextElementSibling.textContent.trim());
+            });
+            if (interests.length > 0) {
+                alert('선택된 관심사: ' + interests.join(', '));
+                // 여기에 다음 페이지로 이동하는 로직을 추가할 수 있습니다.
+            } else {
+                alert('최소한 하나의 관심사를 선택해주세요.');
+            }
+        }
+    </script>
+</body>
+</html>
