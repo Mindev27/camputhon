@@ -142,7 +142,7 @@ app.get('/login', async(req, res) => {
         if(!user) return res.status(401).json(info.message)
         req.logIn(user, (err)=>{
             if(err) return next(err)
-            res.render('mypage.ejs', { data : req.user })
+            res.render('mytimetable.ejs', { data : req.user })
         })
     })(req, res, next)
 });
