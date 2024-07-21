@@ -6,6 +6,9 @@ const bcrypt = require('bcrypt')
 const MongoStore = require('connect-mongo')
 require('dotenv').config()
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
 app.use(methodOverride('_method')) 
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
@@ -88,7 +91,7 @@ app.get('/write', async(req, res) => {
         return res.redirect('/login');
     }
     if(req.user.isAdmin === false) {
-        res.send("쓰기 권한이 없습니다!");
+        return res.send("쓰기 권한이 없습니다!");
     }
     res.render('write.ejs');
 });
@@ -101,10 +104,11 @@ app.post('/newpost', async(req, res) => {
         } else {
             await db.collection('post').insertOne({
                 title : req.body.title,
-                applicationStartTime : req.body.applicationStartTime,
-                applicationEndTime : req.body.applicationEndTime,
-                lectureStartTime : req.body.lectureStartTime,
-                lectureEndTime : req.body.lectureEndTime,
+                applicationStartTime : new Date(req.body.applicationStartTime),
+                applicationEndTime : new Date(req.body.applicationEndTime),
+                lectureStartTime : new Date(req.body.lectureStartTime),
+                lectureEndTime : new Date(req.body.lectureEndTime),
+                lectureDay : req.body.lectureDay,
                 applicationLink : req.body.applicationLink
             })
             res.redirect('/list');
@@ -186,7 +190,34 @@ app.post('/register', checkIdPw, async (req, res) => {
 
     let result = await db.collection('user').insertOne({
         username : req.body.username,
-        password : hashed
+        password : hashed,
+        isAdmin : false
     })
-    res.redirect('/list')
+    res.render('timetable.ejs')
 })
+
+
+app.post('/submit-timetable', async (req, res) => {
+    const { selectedCells } = req.body;
+
+    try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: '사용자가 로그인되어 있지 않습니다.' });
+        }
+
+        await db.collection('user').updateOne(
+            { _id: new ObjectId(req.user._id) },
+            { $set: { selectedCells } }
+        );
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error saving timetable selection:', error);
+        res.json({ success: false });
+    }
+
+    res.render('list.ejs')
+});
+
+app.get('/timetable', async (req, res) => {
+    res.render('timetable.ejs')
+});

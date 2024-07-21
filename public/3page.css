@@ -1,0 +1,124 @@
+/* 기존 스타일 */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+}
+
+header {
+    padding: 20px;
+    text-align: left;
+}
+
+.logo {
+    max-width: 300px;
+    height: auto;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.timetable-container {
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 60%;
+    max-width: 800px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.navigation-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e6f7ff;
+    border: none;
+    border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.navigation-button:hover {
+    background-color: #b3e0ff;
+}
+
+h2 {
+    text-align: left;
+    color: #333;
+    margin: 0;
+}
+
+.timetable {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.timetable th, .timetable td {
+    border: 1px solid #ddd;
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.timetable thead th {
+    background-color: #e6f7ff;
+    color: #333;
+}
+
+.timetable tbody th {
+    background-color: #f2f2f2;
+    color: #333;
+    width: 40px;
+}
+
+.timetable td {
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+.timetable td.selected {
+    background-color: #99ccff;
+}
+
+.next-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #e6f7ff;
+    border: none;
+    border-radius: 5px;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.next-button:hover {
+    background-color: #b3e0ff;
+}
+
+@media (max-width: 768px) {
+    .timetable-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .timetable th, .timetable td {
+        padding: 5px 2px;
+        font-size: 0.8em;
+    }
+}
