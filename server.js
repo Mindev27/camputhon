@@ -240,3 +240,26 @@ app.get('/interests', (req, res) => {
         ]
     });
 });
+
+app.post('/submitInterests', async (req, res) => {
+    const { interests } = req.body
+    const username = req.user.username
+
+    const client = new MongoClient(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+
+    try {
+        await client.connect()
+        console.log('Connected successfully to MongoDB')
+
+        await db.collection('user').insertOne({
+            interests : interests
+        })
+
+        res.send('관심 분야가 성공적으로 저장되었습니다.')
+    } catch (error) {
+        console.error(error)
+        res.status(500).send('관심 분야 저장 중 오류가 발생했습니다.')
+    } finally {
+        await client.close()
+    }
+});
