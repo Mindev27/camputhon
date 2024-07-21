@@ -1,17 +1,17 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const { MongoClient, ObjectId } = require('mongodb');
 const methodOverride = require('method-override')
 const bcrypt = require('bcrypt')
 const MongoStore = require('connect-mongo')
 require('dotenv').config()
-const path = require('path');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 app.use(methodOverride('_method')) 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -218,9 +218,17 @@ app.get('/timetable', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
+    res.render('2페이지', {
+        pageTitle: 'Open Lecture Time',
+        logoSrc: 'open_lecture_time_logo.png'
+    });
+});
+
+
+app.get('/interests', (req, res) => {
     res.render('2페이지.ejs', {
         pageTitle: 'Open Lecture Time',
-        logoSrc: '로고2.png',
+        logoSrc: '/open_lecture_time_logo.png',
         heading: '오픈렉처타임에 오신 것을 환영합니다!',
         interests: [
             { id: 'it', label: 'IT' },
