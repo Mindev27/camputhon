@@ -273,6 +273,7 @@ app.post('/submit', (req, res) => {
 
 const lectures = [
     {
+      day: '월요일',
       time: '12:00',
       title: '고단백질의 역사와 이해',
       instructor: '김민성',
@@ -282,6 +283,7 @@ const lectures = [
       description: '단백질이 진화한 역사와 과정, 고단백질 섭취의 영향에 대한 이해와 고찰'
     },
     {
+      day: '화요일',
       time: '12:00',
       title: '간단 실화 프로그래밍',
       instructor: '이경민',
@@ -291,6 +293,7 @@ const lectures = [
       description: '강의 이후 보강을 위한 추가 수업, 타 학과 학생들도 수강 가능합니다.'
     },
     {
+      day: '수요일',
       time: '13:00',
       title: '범죄심리를 다룬 작품으로...',
       instructor: '박지성',
@@ -300,6 +303,7 @@ const lectures = [
       description: '범죄심리를 다룬 작품의 이해를 통해 바라본 사회적 배경'
     },
     {
+      day: '목요일',
       time: '16:00',
       title: 'IT산업의 시작과 기초',
       instructor: '노준혁',
