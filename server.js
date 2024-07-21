@@ -315,6 +315,21 @@ const lectures = [
   ];
 
   app.get('/', (req, res) => {
-    res.render('search.ejs', { lectures: lectures });
+    const interest = req.query.interest;
+    let filteredLectures = lectures;
+    
+    if (interest) {
+      filteredLectures = lectures.filter(lecture => lecture.tags.includes(interest));
+    }
+    
+    res.render('search.ejs', { lectures: filteredLectures, interests: getUniqueInterests(lectures) });
   });
+  
+  function getUniqueInterests(lectures) {
+    const interests = new Set();
+    lectures.forEach(lecture => {
+      lecture.tags.forEach(tag => interests.add(tag));
+    });
+    return Array.from(interests);
+  }
   

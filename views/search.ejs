@@ -1,86 +1,162 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- 기존 head 내용 유지 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Lecture Time</title>
     <style>
-        /* 기존 스타일 유지 */
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
         }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
+        header {
+            background-color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
+        .logo {
+            height: 40px;
+        }
+        .icons {
+            display: flex;
+            gap: 20px;
+        }
+        .icon {
+            font-size: 24px;
+            color: #333;
             text-decoration: none;
-            display: block;
         }
-        .dropdown-content a:hover {background-color: #f1f1f1}
-        .show {display:block;}
+        main {
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter {
+            background-color: #a3e4f3;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .lecture {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .lecture-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .lecture-time {
+            background-color: #a3e4f3;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        .lecture-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .lecture-instructor {
+            color: #666;
+        }
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .tag {
+            background-color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        .lecture-details {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 14px;
+        }
+        .lecture-description {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
-    <!-- 기존 header 유지 -->
+    <header>
+        <img src="/open_lecture_time_logo.png" alt="Open Lecture Time" class="logo">
+        <div class="icons">
+            <a href="#" class="icon">🔔</a>
+            <a href="#" class="icon">👤</a>
+        </div>
+    </header>
     <main>
         <h1>비교과 프로그램</h1>
-        <div class="filters">
-            <div class="dropdown">
-                <button onclick="toggleDropdown()" class="filter dropbtn">월요일 ▼</button>
-                <div id="dayDropdown" class="dropdown-content">
-                    <a href="#" onclick="filterLectures('월요일')">월요일</a>
-                    <a href="#" onclick="filterLectures('화요일')">화요일</a>
-                    <a href="#" onclick="filterLectures('수요일')">수요일</a>
-                    <a href="#" onclick="filterLectures('목요일')">목요일</a>
-                    <a href="#" onclick="filterLectures('금요일')">금요일</a>
-                    <a href="#" onclick="filterLectures('토요일')">토요일</a>
-                </div>
-            </div>
-            <button class="filter">관심분야 ▼</button>
-        </div>
-        <div id="lectureContainer">
-        <% lectures.forEach(lecture => { %>
-            <div class="lecture" data-day="<%= lecture.day %>">
-                <!-- 기존 강의 정보 표시 유지 -->
-            </div>
-        <% }); %>
-        </div>
+        비교과 프로그램
+<div class="filters">
+  <select id="daySelect">
+    <option value="">월요일 ▼</option>
+    <option value="월요일">월요일</option>
+    <option value="화요일">화요일</option>
+    <option value="수요일">수요일</option>
+    <option value="목요일">목요일</option>
+    <option value="금요일">금요일</option>
+    <option value="토요일">토요일</option>
+  </select>
+
+  <select id="interestSelect" onchange="filterLectures()">
+    <option value="">관심분야 ▼</option>
+    <% interests.forEach(interest => { %>
+      <option value="<%= interest %>"><%= interest %></option>
+    <% }); %>
+  </select>
+</div>
+
+<% lectures.forEach(lecture => { %>
+  <div class="lecture-item" data-day="<%= lecture.day %>">
+    <h3><%= lecture.title %></h3>
+    <p>시간: <%= lecture.time %></p>
+    <p>강사: <%= lecture.instructor %></p>
+    <p>태그: <%= lecture.tags.join(', ') %></p>
+    <p>기간: <%= lecture.duration %></p>
+    <p>장소: <%= lecture.location %></p>
+    <p>설명: <%= lecture.description %></p>
+  </div>
+<% }); %>
+
+<script>
+function filterLectures() {
+  const interest = document.getElementById('interestSelect').value;
+  window.location.href = `/?interest=${interest}`;
+}
+
+document.getElementById('daySelect').addEventListener('change', function() {
+  const selectedDay = this.value;
+  const lectures = document.getElementsByClassName('lecture-item');
+  
+  for (let lecture of lectures) {
+    if (selectedDay === '' || lecture.dataset.day === selectedDay) {
+      lecture.style.display = 'block';
+    } else {
+      lecture.style.display = 'none';
+    }
+  }
+});
+</script>
     </main>
-
-    <script>
-        function toggleDropdown() {
-            document.getElementById("dayDropdown").classList.toggle("show");
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-
-        function filterLectures(day) {
-            var lectures = document.getElementsByClassName('lecture');
-            for (var i = 0; i < lectures.length; i++) {
-                if (lectures[i].getAttribute('data-day') === day) {
-                    lectures[i].style.display = "";
-                } else {
-                    lectures[i].style.display = "none";
-                }
-            }
-            document.querySelector('.dropbtn').textContent = day + ' ▼';
-        }
-    </script>
 </body>
 </html>
