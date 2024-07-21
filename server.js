@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const { MongoClient, ObjectId } = require('mongodb');
 const methodOverride = require('method-override')
 const bcrypt = require('bcrypt')
@@ -10,7 +11,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 app.use(methodOverride('_method')) 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -220,4 +221,27 @@ app.get('/timetable', async (req, res) => {
 app.get('/mytimetable', async (req, res) => {
     console.log(req.user)
     res.render('mytimetable.ejs', { data : req.user })
+
+app.get('/interests', (req, res) => {
+    res.render('2페이지.ejs', {
+        pageTitle: 'Open Lecture Time',
+        logoSrc: '/open_lecture_time_logo.png',
+        heading: '오픈렉처타임에 오신 것을 환영합니다!',
+        interests: [
+            { id: 'it', label: 'IT' },
+            { id: 'economy', label: '경제' },
+            { id: 'law', label: '법' },
+            { id: 'art', label: '예술' },
+            { id: 'psychology', label: '심리' },
+            { id: 'religion', label: '종교' },
+            { id: 'management', label: '경영' },
+            { id: 'society', label: '사회' },
+            { id: 'history', label: '역사' },
+            { id: 'science', label: '과학' },
+            { id: 'coding', label: '코딩' },
+            { id: 'math', label: '수학' },
+            { id: 'ai', label: 'AI' },
+            { id: 'physical', label: '체육' }
+        ]
+    });
 });
