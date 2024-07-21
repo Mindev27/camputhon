@@ -215,3 +215,9 @@ app.post('/submit-timetable', async (req, res) => {
 app.get('/timetable', async (req, res) => {
     res.render('timetable.ejs')
 });
+
+
+app.get('/mytimetable', async (req, res) => {
+    console.log(req.user)
+    res.render('mytimetable.ejs', { data : req.user })
+});
