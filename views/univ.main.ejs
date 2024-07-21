@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Lecture Time</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 200px;
+        }
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .timetable th, .timetable td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .timetable th {
+            background-color: #f0f0f0;
+        }
+        .interests {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .interest-checkbox {
+            display: flex;
+            align-items: center;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="/open_lecture_time_logo.png" alt="Open Lecture Time" class="logo">
+        <div>
+            <span class="icon">🔔</span>
+            <span class="icon">👤</span>
+        </div>
+    </div>
+    
+    <form action="/search" method="POST">
+        <div class="interests">
+            <label class="interest-checkbox"><input type="checkbox" name="IT"> IT</label>
+            <label class="interest-checkbox"><input type="checkbox" name="체육"> 체육</label>
+            <label class="interest-checkbox"><input type="checkbox" name="심리"> 심리</label>
+            <label class="interest-checkbox"><input type="checkbox" name="코딩"> 코딩</label>
+            <label class="interest-checkbox"><input type="checkbox" name="역사"> 역사</label>
+            <label class="interest-checkbox"><input type="checkbox" name="예술"> 예술</label>
+            <label class="interest-checkbox"><input type="checkbox" name="수학"> 수학</label>
+            <label class="interest-checkbox"><input type="checkbox" name="사회"> 사회</label>
+            <label class="interest-checkbox"><input type="checkbox" name="법"> 법</label>
+            <label class="interest-checkbox"><input type="checkbox" name="반도체"> 반도체</label>
+            <label class="interest-checkbox"><input type="checkbox" name="경영"> 경영</label>
+            <label class="interest-checkbox"><input type="checkbox" name="경제"> 경제</label>
+            <label class="interest-checkbox"><input type="checkbox" name="과학"> 과학</label>
+            <label class="interest-checkbox"><input type="checkbox" name="종교"> 종교</label>
+            <label class="interest-checkbox"><input type="checkbox" name="AI"> AI</label>
+        </div>
+        
+        <div class="buttons">
+            <button type="submit" class="btn">탐색하기</button>
+            <button type="button" class="btn">강의 추가하기</button>
+        </div>
+    </form>
+
+    <table class="timetable">
+        <tr>
+            <th></th>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
+            <th>SAT</th>
+        </tr>
+        <% for (let hour = 9; hour <= 21; hour++) { %>
+            <tr>
+                <th><%= hour %>:00</th>
+                <% ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].forEach(day => { %>
+                    <% const key = `${day}-${hour}`; %>
+                    <% const count = timetable[key] || 0; %>
+                    <td style="background-color: rgba(0, 123, 255, <%= count * 0.2 %>);"></td>
+                <% }); %>
+            </tr>
+        <% } %>
+    </table>
+</body>
+</html>

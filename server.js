@@ -332,4 +332,30 @@ const lectures = [
     });
     return Array.from(interests);
   }
-  
+
+  // 임시 데이터 - 실제로는 데이터베이스에서 가져와야 함
+const studentData = [
+    { interests: ['IT', '수학'], freeTime: ['MON-10', 'MON-11', 'MON-12', 'MON-13', 'TUE-14', 'TUE-15', 'WED-11', 'WED-14', 'THU-13', 'THU-14', 'FRI-12', 'FRI-13', 'FRI-14'] },
+    { interests: ['IT', '수학'], freeTime: ['MON-10', 'MON-11', 'MON-12', 'MON-13', 'TUE-14', 'TUE-15', 'WED-16', 'WED-17', 'THU-15', 'THU-16', 'FRI-17', 'FRI-18', 'SAT-15', 'SAT-16'] },
+    // 더 많은 학생 데이터...
+  ];
+  app.get('/', (req, res) => {
+    res.render('univ_main.ejs', { timetable: {} });
+  });
+  app.post('/search', (req, res) => {
+    const selectedInterests = Object.keys(req.body).filter(key => req.body[key] === 'on');
+    const timetable = generateTimetable(selectedInterests);
+    res.render('index', { timetable: timetable });
+  });
+  function generateTimetable(selectedInterests) {
+    const timetable = {};
+    studentData.forEach(student => {
+      if (student.interests.some(interest => selectedInterests.includes(interest))) {
+        student.freeTime.forEach(time => {
+          if (!timetable[time]) timetable[time] = 0;
+          timetable[time]++;
+        });
+      }
+    });
+    return timetable;
+  }
