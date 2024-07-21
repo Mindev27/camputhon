@@ -248,3 +248,16 @@ app.get('/interests', (req, res) => {
         ]
     });
 });
+
+app.get('/', (req, res) => {
+    // 데이터 예시
+    const universities = [
+        { value: 'uni1', label: 'University 1' },
+        { value: 'uni2', label: 'University 2' }
+    ];
+    const majors = [
+        { value: 'major1', label: 'Major 1' },
+        { value: 'major2', label: 'Major 2' }
+    ];
+    res.render('register-school.ejs', { universities, majors });
+});
