@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Lecture Time</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            height: 40px;
+        }
+        .icons {
+            display: flex;
+            gap: 20px;
+        }
+        .icon {
+            font-size: 24px;
+            color: #333;
+            text-decoration: none;
+        }
+        main {
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter {
+            background-color: #a3e4f3;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .lecture {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .lecture-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .lecture-time {
+            background-color: #a3e4f3;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+        .lecture-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .lecture-instructor {
+            color: #666;
+        }
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .tag {
+            background-color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        .lecture-details {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 14px;
+        }
+        .lecture-description {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/open_lecture_time_logo.png" alt="Open Lecture Time" class="logo">
+        <div class="icons">
+            <a href="#" class="icon">🔔</a>
+            <a href="#" class="icon">👤</a>
+        </div>
+    </header>
+    <main>
+        <h1>비교과 프로그램</h1>
+        <div class="filters">
+            <button class="filter">월요일 ▼</button>
+            <button class="filter">관심분야 ▼</button>
+        </div>
+        <% lectures.forEach(lecture => { %>
+            <div class="lecture">
+                <div class="lecture-header">
+                    <span class="lecture-time"><%= lecture.time %></span>
+                    <span class="lecture-title"><%= lecture.title %></span>
+                    <span class="lecture-instructor">교수명: <%= lecture.instructor %></span>
+                </div>
+                <div class="tags">
+                    <% lecture.tags.forEach(tag => { %>
+                        <span class="tag"><%= tag %></span>
+                    <% }); %>
+                </div>
+                <div class="lecture-details">
+                    <span>강의 시간: <%= lecture.duration %></span>
+                    <span>장소: <%= lecture.location %></span>
+                </div>
+                <p class="lecture-description"><%= lecture.description %></p>
+            </div>
+        <% }); %>
+    </main>
+</body>
+</html>

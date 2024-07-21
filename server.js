@@ -259,5 +259,58 @@ app.get('/', (req, res) => {
         { value: 'major1', label: 'Major 1' },
         { value: 'major2', label: 'Major 2' }
     ];
-    res.render('register-school.ejs', { universities, majors });
+    res.render('register.ejs', { universities, majors });
 });
+
+app.get('/', (req, res) => {
+    res.render('register_univ.ejs'); // EJS 파일 이름
+});
+app.post('/submit', (req, res) => {
+    console.log(req.body); // 폼에서 전달된 데이터 출력
+    // 여기에서 요청 데이터를 처리하고 응답을 반환합니다
+    res.send('폼 제출이 완료되었습니다!');
+});
+
+const lectures = [
+    {
+      time: '12:00',
+      title: '고단백질의 역사와 이해',
+      instructor: '김민성',
+      tags: ['체육', '역사'],
+      duration: '1시간',
+      location: '정보문화관IQ 301',
+      description: '단백질이 진화한 역사와 과정, 고단백질 섭취의 영향에 대한 이해와 고찰'
+    },
+    {
+      time: '12:00',
+      title: '간단 실화 프로그래밍',
+      instructor: '이경민',
+      tags: ['코딩', 'AI'],
+      duration: '1시간 30분',
+      location: '씨아이빌딩',
+      description: '강의 이후 보강을 위한 추가 수업, 타 학과 학생들도 수강 가능합니다.'
+    },
+    {
+      time: '13:00',
+      title: '범죄심리를 다룬 작품으로...',
+      instructor: '박지성',
+      tags: ['경제', '심리', '사회'],
+      duration: '40분',
+      location: '문화관 K421',
+      description: '범죄심리를 다룬 작품의 이해를 통해 바라본 사회적 배경'
+    },
+    {
+      time: '16:00',
+      title: 'IT산업의 시작과 기초',
+      instructor: '노준혁',
+      tags: ['IT'],
+      duration: '1시간 20분',
+      location: '씨아이빌딩',
+      description: 'IT산업의 기초를 간단하게 숙지하여 다루는 강의'
+    }
+  ];
+
+  app.get('/', (req, res) => {
+    res.render('search.ejs', { lectures: lectures });
+  });
+  
