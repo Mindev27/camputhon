@@ -217,6 +217,11 @@ app.get('/timetable', async (req, res) => {
     res.render('timetable.ejs')
 });
 
+
+app.get('/mytimetable', async (req, res) => {
+    console.log(req.user)
+    res.render('mytimetable.ejs', { data : req.user })
+
 app.get('/interests', (req, res) => {
     res.render('2페이지.ejs', {
         pageTitle: 'Open Lecture Time',

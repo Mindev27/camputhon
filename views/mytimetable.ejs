@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open Lecture Time - 시간표</title>
+    <style>
+        .timetable td {
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+        .highlight {
+            background-color: lightblue;
+        }
+    </style>
     <link rel="stylesheet" href="3page.css">
 </head>
 <body>
@@ -13,8 +22,8 @@
     <main>
         <div class="timetable-container">
             <div class="header-container">
-                <h2>공강 시간을 선택해주세요.</h2>
-                <a href="/other-page" class="navigation-button">시간표 등록하기</a>
+                <h2><%= data.username %>의 시간표</h2>
+                <a href="/other-page" class="navigation-button">시간표 수정하기</a>
             </div>
             <table class="timetable">
                 <thead>
@@ -33,21 +42,27 @@
                         <tr>
                             <th><%= hour %></th>
                             <% ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'].forEach(day => { %>
-                                <td id="<%= day %>-<%= hour %>"></td>
+                                <% 
+                                    const cellId = `${day}-${hour}`;
+                                    const isSelected = data.selectedCells.includes(cellId);
+                                %>
+                                <td id="<%= cellId %>" class="<%= isSelected ? 'selected' : '' %>"></td>
                             <% }); %>
                         </tr>
                         <tr>
                             <th>ㅤ</th>
-                                <% ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'].forEach(day => { %>
-                                <td id="<%= day %>-<%= hour %>-30"></td>
+                            <% ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'].forEach(day => { %>
+                                <% 
+                                    const cellId = `${day}-${hour}-30`;
+                                    const isSelected = data.selectedCells.includes(cellId);
+                                %>
+                                <td id="<%= cellId %>" class="<%= isSelected ? 'selected' : '' %>"></td>
                             <% }); %>
                         </tr>
                     <% } %>
                 </tbody>
             </table>
-            <button class="next-button">다음</button>
         </div>
     </main>
-    <script src="/3page.js"></script>
 </body>
 </html>
