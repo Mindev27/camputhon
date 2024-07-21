@@ -149,10 +149,20 @@ app.get('/login', async(req, res) => {
 
   
 app.get('/register', (req, res) => {
-    res.render('register.ejs')
+    const universities = [
+        { value: 'uni1', label: '동국대학교' }
+    ];
+    const majors = [
+        { value: 'major1', label: '인공지능전공' },
+        { value: 'major2', label: '데이터사이언스전공' },
+        { value: 'major3', label: '컴퓨터공학전공' },
+        { value: 'major4', label: '멀티미디어소프트웨어전공' }
+    ];
+    res.render('register.ejs', { universities, majors });
 });
 
 app.post('/register', checkIdPw, async (req, res, next) => {
+    console.log(req.user)
     let sameId = await db.collection('user').findOne({ username: req.body.username })
     if(sameId) {
         return res.status(409).json({ message: '이미 사용중인 아이디입니다.' })
@@ -168,7 +178,11 @@ app.post('/register', checkIdPw, async (req, res, next) => {
     let result = await db.collection('user').insertOne({
         username : req.body.username,
         password : hashed,
-        isAdmin : false
+        isAdmin : false,
+        name: req.user.name,
+        email : req.user.email,
+        universitiy : req.use.universities.label,
+        major : req.user.majors.label
     })
 
     // 자동 로그인 처리
