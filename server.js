@@ -258,3 +258,30 @@ app.get('/interests', (req, res) => {
         ]
     });
 });
+
+app.post('/interests', async (req, res) => {
+    console.log('User:', req.user);
+
+    if (!req.user) {
+        console.error('User not logged in');
+        return res.status(401).json({ success: false, message: '사용자가 로그인되어 있지 않습니다.' });
+    }
+
+    console.log('Request body:', req.body);
+
+    const { interests } = req.body;
+    console.log('Selected interests:', interests);
+
+    try {
+        const result = await db.collection('user').updateOne(
+            { _id: new ObjectId(req.user._id) },
+            { $set: { selectedInterests: interests } }
+        );
+
+        console.log('Database update result:', result);
+        res.json({ success: true, message: '관심사가 성공적으로 저장되었습니다.' });
+    } catch (error) {
+        console.error('Error updating interests:', error);
+        res.status(500).json({ success: false, message: '서버 오류가 발생했습니다: ' + error.message });
+    }
+});
