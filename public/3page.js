@@ -16,30 +16,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const nextButton = document.querySelector('.next-button');
-    nextButton.addEventListener('click', () => {
+    nextButton.addEventListener('click', async () => {
         if (selectedCells.length === 0) {
             alert('적어도 하나의 공강 시간을 선택해주세요.');
             return;
         }
-
-        fetch('/submit-timetable', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ selectedCells }),
-        })
-        .then(response => response.json())
-        .then(data => {
+    
+        console.log('Sending selected cells:', selectedCells);
+    
+        try {
+            const response = await fetch('/submit-timetable', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ selectedCells }),
+            });
+    
+            console.log('Fetch response:', response);
+    
+            const data = await response.json();
+            console.log('Server response data:', data);
+    
             if (data.success) {
                 window.location.href = '/list'; // 성공 시 이동할 페이지
             } else {
+                console.error('Server responded with failure:', data);
                 alert('시간표 전송에 실패했습니다. 다시 시도해주세요.');
             }
-        })
-        .catch((error) => {
+        } catch (error) {
             console.error('Error:', error);
             alert('오류가 발생했습니다. 다시 시도해주세요.');
-        });
+        }
     });
+    
 });

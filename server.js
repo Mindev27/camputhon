@@ -60,30 +60,6 @@ app.get('/detail/:id', async (req, res)=>{
     res.render('detail.ejs', { data : result });
 })
 
-app.get('/edit/:id', async (req, res)=>{
-    let result = await db.collection('post').findOne({ _id : new ObjectId(req.params.id) })
-    res.render('edit.ejs', { data : result });
-})
-
-
-app.put('/edit', async(req, res) => {
-    console.log(req.body);
-
-    try {
-        if(req.body.title == '') {
-            res.send("no title error");
-        } else {
-            await db.collection('post').updateOne(
-                { _id: new ObjectId(req.body.id) },
-                { $set: { title: req.body.title, content: req.body.content } }
-            );
-            res.redirect('/list');
-        }
-    } catch(e) {
-        console.log(e);
-        res.status(500).send("server error");
-    }
-});
 
 app.get('/write', async(req, res) => {
     console.log(req.user)
@@ -173,9 +149,9 @@ app.get('/login', async(req, res) => {
   
 app.get('/register', (req, res) => {
     res.render('register.ejs')
-})
+});
 
-app.post('/register', checkIdPw, async (req, res) => {
+app.post('/register', checkIdPw, async (req, res, next) => {
     let sameId = await db.collection('user').findOne({ username: req.body.username })
     if(sameId) {
         return res.status(409).json({ message: '이미 사용중인 아이디입니다.' })
@@ -193,29 +169,47 @@ app.post('/register', checkIdPw, async (req, res) => {
         password : hashed,
         isAdmin : false
     })
-    res.render('timetable.ejs')
-})
 
+    // 자동 로그인 처리
+    passport.authenticate('local', (err, user, info) => {
+        if (err) return next(err);
+        if (!user) return res.status(401).json(info.message);
+        req.logIn(user, (err) => {
+            if (err) return next(err);
+            res.render('timetable.ejs'); // 로그인 되면 시간표 입력페이지로 이동
+        });
+    })(req, res, next);
+});
 
 app.post('/submit-timetable', async (req, res) => {
     const { selectedCells } = req.body;
 
+    console.log('Received selected cells:', selectedCells);
+    console.log('User:', req.user);
+
     try {
         if (!req.user) {
+            console.error('User not logged in');
             return res.status(401).json({ success: false, message: '사용자가 로그인되어 있지 않습니다.' });
         }
 
-        await db.collection('user').updateOne(
+        const result = await db.collection('user').updateOne(
             { _id: new ObjectId(req.user._id) },
             { $set: { selectedCells } }
         );
-        res.json({ success: true });
+
+        console.log('Database update result:', result);
+
+        if (result.modifiedCount === 0) {
+            console.error('Database update failed');
+            return res.status(400).json({ success: false, message: '시간표 업데이트에 실패했습니다.' });
+        }
+
+        res.json({ success: true, message: '시간표가 성공적으로 저장되었습니다.' });
     } catch (error) {
         console.error('Error saving timetable selection:', error);
-        res.json({ success: false });
+        res.status(500).json({ success: false, message: '서버 오류가 발생했습니다: ' + error.message });
     }
-
-    res.render('list.ejs')
 });
 
 app.get('/timetable', async (req, res) => {
