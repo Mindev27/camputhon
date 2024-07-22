@@ -5,6 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="/main.css" rel="stylesheet">
+    <style>
+        .list-box {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .list-box h4 {
+            margin: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .list-box p {
+            margin: 10px 0;
+        }
+        .list-box .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .list-box .tag {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .list-box .detail-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        .list-box .detail-info dt {
+            font-weight: bold;
+        }
+        .list-box .detail-info dd {
+            margin: 0 0 10px 0;
+        }
+    </style>
 </head>
 <body class="white-bg">
     
@@ -36,7 +76,24 @@
                 <p>
                     강의시간 : <%= formatDateTime(post[i].lectureStartTime) %> ~ <%= formatDateTime(post[i].lectureEndTime) %>
                 </p>
-              </div>
+                <div class="tags">
+                    <% 
+                        let tagsArray;
+                        try {
+                            tagsArray = JSON.parse(post[i].Tag); 
+                        } catch (e) {
+                            tagsArray = post[i].Tag.replace(/[\[\]\"\' ]/g, '').split(','); 
+                        }
+                    %>
+                    <% tagsArray.forEach(Tag => { %>
+                        <span class="tag"><%= Tag %></span>
+                    <% }); %>
+                </div>
+                <dl class="detail-info">
+                    <dd><a href="<%= post[i].applicationLink %>">신청 링크</a></dd>
+                    <dt>강의 요일: <%= post[i].lectureDay %></dt> 
+                </dl>
+            </div>
         <% } %>
     </div> 
   

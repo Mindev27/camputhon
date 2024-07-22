@@ -5,51 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>새 강의 작성</title>
     <link rel="stylesheet" href="/styles/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #99ccff;
+            color: #fff;
+            border-radius: 8px;
+        }
+        .logo {
+            width: 350px;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .interests {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .interest-checkbox {
+            display: flex;
+            flex-direction: column; /* 세로 방향 정렬 */
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .interest-checkbox:hover {
+            background-color: #f0f0f0;
+            border-color: #99ccff;
+        }
+        .interest-checkbox input {
+            width: 20px; 
+            height: 20px; 
+            margin-bottom: 5px; 
+        }.interest-checkbox span {
+            margin-top: 25px; /* 텍스트 위치 조정 */
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <header>
+    <header class="header">
+        <img src="/open_lecture_time_logo.png" alt="Open Lecture Time" class="logo">
         <h1>새 강의 작성</h1>
     </header>
     <main>
-        <form action="/newpost" method="POST">
-            <div>
-                <label for="title">제목:</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            <div>
-                <label for="applicationStartTime">신청 시작 시간:</label>
-                <input type="datetime-local" id="applicationStartTime" name="applicationStartTime" required>
-            </div>
-            <div>
-                <label for="applicationEndTime">신청 종료 시간:</label>
-                <input type="datetime-local" id="applicationEndTime" name="applicationEndTime" required>
-            </div>
-            <div>
-                <label for="lectureStartTime">강의 시작 시간:</label>
-                <input type="datetime-local" id="lectureStartTime" name="lectureStartTime" required>
-            </div>
-            <div>
-                <label for="lectureEndTime">강의 종료 시간:</label>
-                <input type="datetime-local" id="lectureEndTime" name="lectureEndTime" required>
-            </div>
-            <div>
-                <label for="lectureDay">강의 시작 요일:</label>
-                <select id="lectureDay" name="lectureDay" required>
-                    <option value="Monday">월요일</option>
-                    <option value="Tuesday">화요일</option>
-                    <option value="Wednesday">수요일</option>
-                    <option value="Thursday">목요일</option>
-                    <option value="Friday">금요일</option>
-                    <option value="Saturday">토요일</option>
-                    <option value="Sunday">일요일</option>
-                </select>
-            </div>
-            <div>
-                <label for="applicationLink">신청 링크:</label>
-                <input type="url" id="applicationLink" name="applicationLink" required>
-            </div>
-            <button type="submit">저장</button>
-        </form>
+        <div class="form-container">
+            <form action="/newpost" method="POST">
+                <div class="form-group">
+                    <label for="title">제목:</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="applicationStartTime">신청 시작 시간:</label>
+                    <input type="datetime-local" id="applicationStartTime" name="applicationStartTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="applicationEndTime">신청 종료 시간:</label>
+                    <input type="datetime-local" id="applicationEndTime" name="applicationEndTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="lectureStartTime">강의 시작 시간:</label>
+                    <input type="datetime-local" id="lectureStartTime" name="lectureStartTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="lectureEndTime">강의 종료 시간:</label>
+                    <input type="datetime-local" id="lectureEndTime" name="lectureEndTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="lectureDay">강의 시작 요일:</label>
+                    <select id="lectureDay" name="lectureDay" required>
+                        <option value="Monday">월요일</option>
+                        <option value="Tuesday">화요일</option>
+                        <option value="Wednesday">수요일</option>
+                        <option value="Thursday">목요일</option>
+                        <option value="Friday">금요일</option>
+                        <option value="Saturday">토요일</option>
+                        <option value="Sunday">일요일</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="applicationLink">신청 링크:</label>
+                    <input type="url" id="applicationLink" name="applicationLink" required>
+                </div>
+                <div class="form-group">
+                    <label>관심사:</label>
+                    <div class="interests">
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="IT"> IT</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="체육"> 체육</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="심리"> 심리</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="코딩"> 코딩</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="역사"> 역사</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="예술"> 예술</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="수학"> 수학</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="사회"> 사회</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="법"> 법</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="반도체"> 반도체</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="경영"> 경영</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="경제"> 경제</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="과학"> 과학</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="종교"> 종교</label>
+                        <label class="interest-checkbox"><input type="checkbox" name="interests[]" value="AI"> AI</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn">저장</button>
+            </form>
+        </div>
     </main>
 </body>
 </html>

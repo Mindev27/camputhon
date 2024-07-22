@@ -74,7 +74,6 @@ app.get('/write', async(req, res) => {
 });
 
 app.post('/newpost', async(req, res) => {
-
     try {
         if(req.body.title == '') {
             res.send("no title error");
@@ -343,3 +342,4 @@ app.get('/searchlecture', async (req, res) => {
     console.log(canListenLecture);
     res.render('list.ejs', { post : canListenLecture });
 })
+
